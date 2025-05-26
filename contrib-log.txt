@@ -19,3 +19,4 @@ Improved UI on 2025-06-07
 Tuned layout on 2025-06-08
 Updated documentation on 2025-06-18
 Updated dependencies on 2025-06-03
+Enhanced validation on 2025-05-26
