@@ -16,3 +16,4 @@ Cleaned up code on 2025-05-03
 Cleaned up code on 2025-05-21
 Tuned layout on 2025-06-02
 Improved UI on 2025-06-07
+Tuned layout on 2025-06-08
