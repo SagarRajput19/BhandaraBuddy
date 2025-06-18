@@ -1,0 +1,123 @@
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      flex: 1;
+      background: url('/img/bg.png') center center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      position: relative;
+    }
+
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.253); /* dark overlay */
+      z-index: 1;
+    }
+
+    .thank-you-message {
+      z-index: 2;
+      max-width: 300px;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: rgba(81, 78, 78, 0.364);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .thank-you-message h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .thank-you-message p {
+      font-size: 16px;
+    }
+
+    .form-section {
+      flex: 1;
+      padding: 40px 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea,
+    select,
+    button {
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+.home-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #ddd;
+}
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        height: 200px;
+      }
+      .thank-you-message {
+        max-width: 90%;
+        padding: 15px;
+      }
+    }

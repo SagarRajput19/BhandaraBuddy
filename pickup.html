@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pickup Free Food</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/pickup.css">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+  <h2>Available Free Food Near You</h2>
+
+  <div class="filters">
+    <input id="searchInput" type="text" placeholder="Search by location..." oninput="handleFilters()" />
+    <select id="radiusSelect" onchange="handleFilters()">
+      <option value="2">2 km</option>
+      <option value="5">5 km</option>
+      <option value="10" selected>10 km</option>
+      <option value="25">25 km</option>
+      <option value="9999">Any</option>
+    </select>
+  </div>
+
+  <div id="foodGrid" class="grid"></div>
+
+  <!-- Modal -->
+  <div id="pickupModal">
+    <div class="modal-content">
+      <h3>Pickup Details</h3>
+      <input type="text" id="pickupName" placeholder="Your Name" />
+      <input type="text" id="pickupContact" placeholder="Contact Number" />
+      <input type="datetime-local" id="pickupTime" />
+      <textarea id="pickupNotes" rows="3" placeholder="Additional Notes (optional)"></textarea>
+      <div class="modal-buttons">
+        <button class="submit-btn" onclick="submitPickup()">Submit</button>
+        <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD3AwWfYWyIvckEYNhHGDlNUjPLDOuNJ_g",
+      authDomain: "free-food-radar-f2aa6.firebaseapp.com",
+      projectId: "free-food-radar-f2aa6",
+      storageBucket: "free-food-radar-f2aa6.appspot.com",
+      messagingSenderId: "655125526733",
+      appId: "1:655125526733:web:ad9533b17df00417051184"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let userLocation = null;
+    let allData = [];
+    let selectedFoodId = null;
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function fetchFood(radiusKm = 10, searchQuery = "") {
+      const grid = document.getElementById("foodGrid");
+      grid.innerHTML = "<p>Loading...</p>";
+
+      db.collection("donated_food")
+        .where("createdAt", ">", new Date(Date.now() - 12 * 60 * 60 * 1000))
+        .get()
+        .then(snapshot => {
+          grid.innerHTML = "";
+          allData = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            data.id = doc.id;
+            allData.push(data);
+          });
+          renderFiltered(radiusKm, searchQuery);
+        });
+    }
+
+    function renderFiltered(radiusKm, searchQuery) {
+      const grid = document.getElementById("foodGrid");
+      grid.innerHTML = "";
+      const lowerSearch = searchQuery.toLowerCase();
+
+      allData.forEach(data => {
+        const [lat, lon] = data.locationCoords || [null, null];
+        const locationMatch = data.location.toLowerCase().includes(lowerSearch);
+
+        if (!locationMatch) return;
+
+        if (userLocation && lat && lon) {
+          const distance = getDistance(userLocation.lat, userLocation.lon, lat, lon);
+          if (distance > radiusKm) return;
+        }
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${data.foodItem}</h3>
+          <p><strong>Quantity:</strong> ${data.quantity}</p>
+          <p><strong>Location:</strong> ${data.location}</p>
+          <p><strong>Contact:</strong> ${data.contact}</p>
+          <button onclick="openModal('${data.id}')">Get Food</button>
+        `;
+        grid.appendChild(card);
+      });
+
+      if (!grid.children.length) {
+        grid.innerHTML = "<p>No food found within selected radius and search.</p>";
+      }
+    }
+
+    function init() {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          userLocation = {
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude
+          };
+          fetchFood(10, "");
+        },
+        () => {
+          userLocation = null;
+          fetchFood(9999, "");
+        }
+      );
+    }
+
+    function handleFilters() {
+      const radius = parseInt(document.getElementById("radiusSelect").value);
+      const search = document.getElementById("searchInput").value;
+      renderFiltered(radius, search);
+    }
+
+    function openModal(foodId) {
+      selectedFoodId = foodId;
+      document.getElementById("pickupModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("pickupModal").style.display = "none";
+      selectedFoodId = null;
+      document.getElementById("pickupName").value = "";
+      document.getElementById("pickupContact").value = "";
+      document.getElementById("pickupTime").value = "";
+      document.getElementById("pickupNotes").value = "";
+    }
+
+    function submitPickup() {
+      const name = document.getElementById("pickupName").value;
+      const contact = document.getElementById("pickupContact").value;
+      const time = document.getElementById("pickupTime").value;
+      const notes = document.getElementById("pickupNotes").value;
+
+      if (!name || !contact || !time) {
+        alert("Please fill all required fields.");
+        return;
+      }
+
+      console.log("Pickup Request for Food ID:", selectedFoodId);
+      alert("Pickup Request Submitted!");
+      closeModal();
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>

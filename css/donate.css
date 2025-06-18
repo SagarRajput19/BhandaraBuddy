@@ -1,0 +1,96 @@
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fdfdfd;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: auto;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .left-panel {
+      flex: 1;
+      min-width: 280px;
+      background: url('https://thumbs.dreamstime.com/b/thank-you-text-written-over-green-background-thank-you-spoon-fork-knife-circular-green-123217540.jpg') center center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .left-panel::before {
+      content: "";
+      position: absolute;
+      background: rgba(0, 0, 0, 0.4);
+      inset: 0;
+    }
+
+    .thank-note {
+      position: relative;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .thank-note h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .thank-note p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .right-panel {
+      flex: 1;
+      min-width: 320px;
+      padding: 40px 30px;
+    }
+
+    .right-panel h2 {
+      color: #d32f2f;
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 1em;
+    }
+
+    form input, form button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #d32f2f;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: orange;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }

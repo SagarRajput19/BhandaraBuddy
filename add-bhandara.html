@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Bhandara Details</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <link rel="stylesheet" href="css/add-bhandara.css">
+
+
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <div class="thank-you-message">
+      <h2>Thank You!</h2>
+      <p>Your contribution helps reduce food waste and supports those in need. Together, we’re building a generous and
+        caring community.</p>
+      <a href="index.html" class="home-button">Go to Home</a>
+    </div>
+  </div>
+
+
+  <div class="form-section">
+    <h1>Add Bhandara Details</h1>
+    <form id="bhandaraForm">
+      <label>
+        Event Name:<br />
+        <input type="text" name="eventName" required />
+      </label>
+
+      <label>
+        Food Type:<br />
+        <select name="foodType" required>
+          <option value="">Select Food Type</option>
+          <option value="Veg">Veg</option>
+          <option value="Satvik">Satvik</option>
+          <option value="Prasad">Prasad</option>
+        </select>
+      </label>
+
+      <label>
+        Area / Location:<br />
+        <input type="text" name="area" id="area" placeholder="e.g. Muzaffarnagar, Shamli Road" required />
+      </label>
+
+      <label>
+        Start Time:<br />
+        <input type="datetime-local" name="startTime" required />
+      </label>
+
+      <label>
+        End Time:<br />
+        <input type="datetime-local" name="endTime" required />
+      </label>
+
+      <label>
+        Extra Notes:<br />
+        <textarea name="extraNotes" rows="3"></textarea>
+      </label>
+
+      <button type="submit">Add Bhandara</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('bhandaraForm');
+
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        alert('Please login to add a bhandara.');
+        window.location.href = 'login.html?redirect=add-bhandara.html';
+      }
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const user = auth.currentUser;
+      if (!user) {
+        alert('You must be logged in to submit.');
+        window.location.href = 'login.html?redirect=add-bhandara.html';
+        return;
+      }
+
+      const eventName = form.eventName.value.trim();
+      const foodType = form.foodType.value;
+      const area = form.area.value.trim();
+      const startTime = form.startTime.value;
+      const endTime = form.endTime.value;
+      const extraNotes = form.extraNotes.value.trim();
+
+      if (new Date(startTime) >= new Date(endTime)) {
+        alert('Start time must be before end time.');
+        return;
+      }
+
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        try {
+          await db.collection('events').add({
+            eventName,
+            foodType,
+            location: { area, lat, lon },
+            startTime: new Date(startTime).toISOString(),
+            endTime: new Date(endTime).toISOString(),
+            extraNotes,
+            createdBy: user.uid,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          alert('Bhandara added successfully!');
+          form.reset();
+          window.location.href = 'index.html';
+        } catch (error) {
+          alert('Error adding bhandara: ' + error.message);
+        }
+      }, () => {
+        alert('Could not get your current location. Please allow location access.');
+      });
+    });
+  </script>
+
+</body>
+
+</html>

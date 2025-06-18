@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donate Food</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <link rel="stylesheet" href="css/donate.css">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD3AwWfYWyIvckEYNhHGDlNUjPLDOuNJ_g",
+      authDomain: "free-food-radar-f2aa6.firebaseapp.com",
+      projectId: "free-food-radar-f2aa6",
+      storageBucket: "free-food-radar-f2aa6.appspot.com",
+      messagingSenderId: "655125526733",
+      appId: "1:655125526733:web:ad9533b17df00417051184",
+      measurementId: "G-CWDKZ5NDR4"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function donateFood(event) {
+      event.preventDefault();
+
+      const foodItem = document.getElementById("foodItem").value;
+      const quantity = document.getElementById("quantity").value;
+      const location = document.getElementById("location").value;
+      const contact = document.getElementById("contact").value;
+
+      db.collection("donated_food").add({
+        foodItem,
+        quantity,
+        location,
+        contact,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert("Food donation listed successfully!");
+        document.getElementById("donationForm").reset();
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <div class="thank-note">
+        <h2>Thank You!</h2>
+        <p>Your contribution brings food to someone who needs it. Together, we reduce hunger and waste. You're making a real difference!</p>
+      </div>
+    </div>
+    <div class="right-panel">
+      <h2>Donate Food</h2>
+      <form id="donationForm" onsubmit="donateFood(event)">
+        <input type="text" id="foodItem" placeholder="Food Item" required />
+        <input type="text" id="quantity" placeholder="Quantity" required />
+        <input type="text" id="location" placeholder="Pickup Location" required />
+        <input type="text" id="contact" placeholder="Contact Info" required />
+        <button type="submit">Donate</button>
+                <a href="index.html" style="text-decoration-line: none;">Go To Back </a>
+
+      </form>
+    </div>
+  </div>
+</body>
+</html>

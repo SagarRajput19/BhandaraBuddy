@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bhandara Buddy</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
+</head>
+
+<body>
+
+  <header>
+    <h1>Bhandara Buddy</h1>
+    <button id="hamburger" aria-label="Menu">&#9776;</button>
+    <nav id="navMenu">
+      <button id="addBhandaraBtn" style="display: none;">Add Bhandara</button>
+      <button><a href="add-bhandara.html">Contribute a Bhandara</a></button>
+      <button id="loginBtn">Login</button>
+    </nav>
+  </header>
+
+  <section id="home">
+    <div class="home-content">
+      <div class="center-text">
+        <h1>Bhandara <span>Buddy</span></h1>
+        <p>Never Miss a Bhandara Again!</p>
+      </div>
+      <div class="gif-box">
+        <img src="img/char-unscreen(1).gif" alt="Animated Character" />
+      </div>
+    </div>
+  </section>
+
+  <section class="bb-features">
+    <div class="bb-feature-grid">
+      <div class="bb-feature-box">
+        <i data-lucide="map-pin"></i>
+        <h3>Easy Location</h3>
+        <p>Quickly locate nearby Bhandaras on the map with just a tap.</p>
+      </div>
+      <div class="bb-feature-box">
+        <i data-lucide="plus-circle"></i>
+        <h3>Quick Add</h3>
+        <p>Add new events in seconds and let others know what's happening.</p>
+      </div>
+      <div class="bb-feature-box">
+        <i data-lucide="list"></i>
+        <h3>Event Listing</h3>
+        <p>Browse upcoming Bhandaras with complete time and place info.</p>
+      </div>
+      <div class="bb-feature-box">
+        <i data-lucide="bell-ring"></i>
+        <h3>Smart Alerts</h3>
+        <p>Get notified when a new Bhandara is organized near your location.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h1 class="intro-text">Find Free Food Events Near You</h1>
+    <div id="filterContainer">
+      <label for="radiusFilter"><strong>Show events within:</strong></label>
+      <select id="radiusFilter">
+        <option value="all">All</option>
+        <option value="1">1 km</option>
+        <option value="5" selected>5 km</option>
+        <option value="10">10 km</option>
+      </select>
+      &nbsp; &nbsp;
+      <div id="searchContainer">
+        <label for="locationSearch"><strong>Search by Location:</strong></label>
+        <input type="text" id="locationSearch" placeholder="Enter area or location" />
+      </div>
+    </div>
+    <div id="eventsList">Loading events...</div>
+  </section>
+
+
+
+
+
+
+  <section class="encourage-donate">
+    <div class="container">
+      <div class="encourage-left">
+        <img
+          src="https://cdni.iconscout.com/illustration/premium/thumb/food-donation-illustration-download-in-svg-png-gif-file-formats--homeless-help-poor-poverty-charity-and-pack-sign-symbols-illustrations-10303215.png"
+          alt="Donate Food">
+      </div>
+      <div class="encourage-right">
+        <h2>Be a Hero </h2>
+        <p>Every meal you donate can light up someone's day. Don’t throw away—give it away.</p>
+        <p>Help reduce food waste and feed someone in need. Your small action can have a big impact.</p>
+        <a href="donate.html" class="donate-btn">Donate Extra Food</a>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="pickup-cta-section">
+    <div class="pickup-cta-container">
+
+      <!-- Text Content -->
+      <div class="pickup-cta-text">
+        <h2>Free Food Shared by the Community</h2>
+        <p>See food listings generously shared by people nearby. No cost, just kindness. Pick up what you need—simple
+          and easy.</p>
+        <a href="pickup.html" class="pickup-cta-btn">Browse Free Food</a>
+      </div>
+
+      <!-- Illustration -->
+      <div class="pickup-cta-image">
+        <img
+          src="https://png.pngtree.com/png-vector/20230103/ourmid/pngtree-charity-and-donating-food-concept-png-image_6549098.png"
+          alt="Community food sharing" />
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="about-section">
+    <div class="about-container">
+      <div class="about-image">
+        <img
+          src="https://png.pngtree.com/png-clipart/20240627/original/pngtree-food-donation-drive-helpers-packing-donations-on-transparent-background-png-image_15424085.png"
+          alt="Food donation">
+      </div>
+      <div class="about-text">
+        <h2>Bhandara Buddy</h2>
+        <p>
+          Bhandara Buddy is a community-powered initiative to reduce food waste and help those in need.
+          Our mission is to create a bridge between people who have extra food and those looking for a meal — all for
+          free.
+          Together, we’re making sure no good food goes to waste, and no one sleeps hungry.
+        </p>
+        <div class="about-highlights">
+          <div class="highlight">
+            <h4>Our Purpose</h4>
+            <p>Connecting generous donors with those in need, one meal at a time.</p>
+          </div>
+          <div class="highlight">
+            <h4>Our Goal</h4>
+            <p>End food waste by connecting excess food to those who need it quickly, locally.</p>
+          </div>
+
+        </div>
+        <a href="pickup.html" class="about-btn">See Available Food</a>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>Bhandara Buddy</h3>
+        <p>Connecting people through community food sharing. Helping reduce food waste and feed those in need — one
+          plate at a time.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="pickup.html">See Free Food</a></li>
+          <li><a href="donate.html">Donate Food</a></li>
+          <li><a href="add-bhandara.html">add-bhandara</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 <strong>Bhandara Buddy</strong>. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const addBhandaraBtn = document.getElementById('addBhandaraBtn');
+    const eventsList = document.getElementById('eventsList');
+    const radiusFilter = document.getElementById('radiusFilter');
+    const locationSearch = document.getElementById('locationSearch');
+
+    let userLat = null;
+    let userLon = null;
+    let allEvents = [];
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        loginBtn.textContent = "Logout";
+        addBhandaraBtn.style.display = "inline-block";
+      } else {
+        loginBtn.textContent = "Login";
+        addBhandaraBtn.style.display = "none";
+      }
+    });
+
+    loginBtn.addEventListener('click', () => {
+      if (auth.currentUser) {
+        auth.signOut();
+      } else {
+        window.location.href = 'login.html?redirect=index.html';
+      }
+    });
+
+    addBhandaraBtn.addEventListener('click', () => {
+      window.location.href = 'add-bhandara.html';
+    });
+
+    function deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    }
+
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = deg2rad(lat2 - lat1);
+      const dLon = deg2rad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    function createDirectionLink(event) {
+      const destLat = event.location?.lat;
+      const destLon = event.location?.lon;
+
+      if (typeof destLat !== 'number' || typeof destLon !== 'number') {
+        return `<p style="color: red;">Location not available</p>`;
+      }
+
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLon}&travelmode=walking`;
+      return `<a href="${url}" target="_blank" class="direction-link">Get Directions ➚</a>`;
+    }
+
+    function displayEvents(events) {
+      if (events.length === 0) {
+        eventsList.innerHTML = "<p>No events found for the selected filter.</p>";
+        return;
+      }
+
+      let html = '';
+      events.forEach(e => {
+        html += `
+        <div class="event-card">
+          <h3>${e.eventName}</h3>
+          <p><strong>Food Type:</strong> ${e.foodType}</p>
+          <p><strong>Location:</strong> ${e.location.area}</p>
+          <p><strong>Start:</strong> ${new Date(e.startTime).toLocaleString()}</p>
+          <p><strong>End:</strong> ${new Date(e.endTime).toLocaleString()}</p>
+          ${e.extraNotes ? `<p><strong>Notes:</strong> ${e.extraNotes}</p>` : ''}
+          ${createDirectionLink(e)}
+        </div>
+      `;
+      });
+      eventsList.innerHTML = html;
+    }
+
+    function filterAndDisplayEvents() {
+      const selectedRadius = radiusFilter.value;
+      const searchQuery = locationSearch.value.toLowerCase().trim();
+
+      let filtered = allEvents;
+
+      if (selectedRadius !== 'all' && userLat !== null && userLon !== null) {
+        const radiusNum = Number(selectedRadius);
+        filtered = filtered.filter(e => {
+          if (e.location && typeof e.location.lat === 'number' && typeof e.location.lon === 'number') {
+            const dist = getDistanceFromLatLonInKm(userLat, userLon, e.location.lat, e.location.lon);
+            return dist <= radiusNum;
+          }
+          return false;
+        });
+      }
+
+      if (searchQuery) {
+        filtered = filtered.filter(e =>
+          e.location?.area?.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      displayEvents(filtered);
+    }
+
+    function loadAllEvents() {
+      db.collection('events').get()
+        .then(snapshot => {
+          allEvents = [];
+          snapshot.forEach(doc => allEvents.push(doc.data()));
+          filterAndDisplayEvents();
+        })
+        .catch(err => {
+          eventsList.innerHTML = `<p>Error loading events: ${err.message}</p>`;
+        });
+    }
+
+    function init() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          userLat = position.coords.latitude;
+          userLon = position.coords.longitude;
+          loadAllEvents();
+        }, () => {
+          eventsList.innerHTML = `<p>Could not get your location. Showing all events.</p>`;
+          loadAllEvents();
+        });
+      } else {
+        eventsList.innerHTML = `<p>Geolocation not supported. Showing all events.</p>`;
+        loadAllEvents();
+      }
+    }
+
+    radiusFilter.addEventListener('change', filterAndDisplayEvents);
+    locationSearch.addEventListener('input', filterAndDisplayEvents);
+    window.onload = init;
+  </script>
+
+  <script>
+    document.getElementById("hamburger").addEventListener("click", function () {
+      document.getElementById("navMenu").classList.toggle("show");
+    });
+  </script>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="pickup.js"></script>
+
+</body>
+
+</html>
