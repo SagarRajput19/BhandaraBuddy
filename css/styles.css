@@ -73,6 +73,9 @@ header h1 {
   cursor: pointer;
 
 }
+header h1 span{
+color:#c6c5c4;
+}
 #home {
   margin-top: -40px;
   min-height: 90vh;
