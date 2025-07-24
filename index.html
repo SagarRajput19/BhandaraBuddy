@@ -303,22 +303,80 @@
           eventsList.innerHTML = `<p>Error loading events: ${err.message}</p>`;
         });
     }
-
-    function init() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          userLat = position.coords.latitude;
-          userLon = position.coords.longitude;
-          loadAllEvents();
-        }, () => {
-          eventsList.innerHTML = `<p>Could not get your location. Showing all events.</p>`;
-          loadAllEvents();
-        });
-      } else {
-        eventsList.innerHTML = `<p>Geolocation not supported. Showing all events.</p>`;
-        loadAllEvents();
-      }
+function displayDefaultCards() {
+  const defaultEvents = [
+    {
+      eventName: "Community Langar",
+      foodType: "Vegetarian",
+      location: { area: "Sector 21" },
+      startTime: new Date(),
+      endTime: new Date(Date.now() + 2 * 60 * 60 * 1000),
+      extraNotes: "Open to all"
+    },
+    {
+      eventName: "Free Midday Meal",
+      foodType: "North Indian",
+      location: { area: "City Center" },
+      startTime: new Date(),
+      endTime: new Date(Date.now() + 1 * 60 * 60 * 1000),
+      extraNotes: "Bring your own plate"
+    },
+    {
+      eventName: "Temple Bhandara",
+      foodType: "Satvik",
+      location: { area: "Main Bazaar" },
+      startTime: new Date(),
+      endTime: new Date(Date.now() + 3 * 60 * 60 * 1000),
+      extraNotes: "Prasad included"
+    },
+    {
+      eventName: "Charity Food Drive",
+      foodType: "Mixed",
+      location: { area: "Park Avenue" },
+      startTime: new Date(),
+      endTime: new Date(Date.now() + 2.5 * 60 * 60 * 1000),
+      extraNotes: ""
     }
+  ];
+
+  displayEvents(defaultEvents);
+}
+
+    
+    // function init() {
+    //   if (navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(position => {
+    //       userLat = position.coords.latitude;
+    //       userLon = position.coords.longitude;
+    //       loadAllEvents();
+    //     }, () => {
+    //       eventsList.innerHTML = `<p>Could not get your location. Showing all events.</p>`;
+    //       loadAllEvents();
+    //     });
+    //   } else {
+    //     eventsList.innerHTML = `<p>Geolocation not supported. Showing all events.</p>`;
+    //     loadAllEvents();
+    //   }
+    // }
+    function init() {
+  displayDefaultCards(); // Show default cards immediately
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      userLat = position.coords.latitude;
+      userLon = position.coords.longitude;
+      loadAllEvents(); // Replace with actual nearby events
+    }, () => {
+      console.warn("Location denied");
+      eventsList.insertAdjacentHTML('beforebegin', `<p>Could not get your location. Showing all events.</p>`);
+      loadAllEvents(); // Replace with all events
+    });
+  } else {
+    eventsList.insertAdjacentHTML('beforebegin', `<p>Geolocation not supported. Showing all events.</p>`);
+    loadAllEvents(); // Replace with all events
+  }
+}
+
 
     radiusFilter.addEventListener('change', filterAndDisplayEvents);
     locationSearch.addEventListener('input', filterAndDisplayEvents);
