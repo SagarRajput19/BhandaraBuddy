@@ -12,7 +12,7 @@
 
     .sidebar {
       flex: 1;
-      background: url('/img/bg.png') center center/cover no-repeat;
+      background: url('https://t3.ftcdn.net/jpg/03/48/27/26/360_F_348272608_Z99YZooY3ULkxg6fyJdcPMs9Zwq9yQsN.jpg') center center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
